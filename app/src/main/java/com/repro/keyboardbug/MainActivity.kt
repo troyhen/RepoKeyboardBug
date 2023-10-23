@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
@@ -23,6 +22,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -89,7 +89,13 @@ private fun LongList(modifier: Modifier = Modifier) {
 @Composable
 private fun DataEntry(modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
-    BasicTextField(value = text, onValueChange = { text = it }, modifier, textStyle = MaterialTheme.typography.bodyLarge)
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        modifier = modifier,
+        placeholder = { Text("Enter some text here") },
+        textStyle = MaterialTheme.typography.bodyLarge,
+    )
 }
 
 @Composable
