@@ -37,28 +37,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable
-    private fun Content(padding: PaddingValues) {
-        var showText by remember { mutableStateOf(false) }
-        Column(
-            Modifier
-                .padding(padding)
-                .padding(16.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Click to toggle text entry", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Button({ showText = !showText }) {
-                    Text(if (showText) "Hide" else "Show", style = MaterialTheme.typography.bodyLarge)
-                }
+}
+
+@Composable
+private fun Content(padding: PaddingValues) {
+    var showText by remember { mutableStateOf(false) }
+    Column(
+        Modifier
+            .padding(padding)
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Click to toggle text entry", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+            Button({ showText = !showText }) {
+                Text(if (showText) "Hide" else "Show", style = MaterialTheme.typography.bodyLarge)
             }
-            LongList(Modifier.weight(1f))
-            if (showText) {
-                DataEntry(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                )
-            }
+        }
+        LongList(Modifier.weight(1f))
+        if (showText) {
+            DataEntry(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            )
         }
     }
 }
