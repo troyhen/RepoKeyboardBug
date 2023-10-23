@@ -11,11 +11,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,9 +39,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            var entryState = remember { mutableStateOf(false) }
             RepoKeyboardBugTheme {
-                Scaffold { padding ->
-                    Content(padding)
+                Scaffold(
+                    bottomBar = { Navigation(entryState) }
+                ) { padding ->
+                    Content(entryState, Modifier.padding(padding))
                 }
             }
         }
@@ -40,13 +53,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Content(padding: PaddingValues) {
-    var showText by remember { mutableStateOf(false) }
-    Column(
-        Modifier
-            .padding(padding)
-            .padding(16.dp)
-    ) {
+private fun Content(entryState: MutableState<Boolean>, modifier: Modifier = Modifier) {
+    var showText by entryState
+    Column(modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Click to toggle text entry", Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
             Button({ showText = !showText }) {
@@ -81,4 +90,17 @@ private fun LongList(modifier: Modifier = Modifier) {
 private fun DataEntry(modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
     BasicTextField(value = text, onValueChange = { text = it }, modifier, textStyle = MaterialTheme.typography.bodyLarge)
+}
+
+@Composable
+private fun Navigation(entryState: State<Boolean>) {
+    if (entryState.value) return
+    var selectedItem by remember { mutableStateOf(0) }
+    BottomAppBar {
+        NavigationBar {
+            NavigationBarItem(selected = selectedItem == 0, onClick = { selectedItem = 0 }, icon = { Icon(Icons.Default.Home, "Home") })
+            NavigationBarItem(selected = selectedItem == 1, onClick = { selectedItem = 1 }, icon = { Icon(Icons.Default.Phone, "Phone") })
+            NavigationBarItem(selected = selectedItem == 2, onClick = { selectedItem = 2 }, icon = { Icon(Icons.Default.Email, "Email") })
+        }
+    }
 }
